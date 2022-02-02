@@ -1,0 +1,119 @@
+import React, {Dispatch} from "react";
+import {Pressable, StyleSheet, Text, View} from "react-native";
+import Animated, {useAnimatedStyle, useSharedValue, withSpring, withTiming} from 'react-native-reanimated';
+
+const INPUT_SIZE = 65;
+
+interface LockScreenBottomProps {
+    input: string[]
+    setCurrentInput: React.Dispatch<(currentInput: string[]) => string[]>
+    wrongAttempts: number
+    blockedInput: boolean
+
+    bottomComponentLabel: string
+    bottomComponentOnPress: () => void
+}
+
+const LockScreenBottom: React.FC<LockScreenBottomProps> = (props) => {
+
+    const shakeTranslateX = useSharedValue<number>(0)
+
+    React.useEffect(() => {
+       if (props.wrongAttempts !== 0) {
+           triggerShake()
+       }
+    }, [props.wrongAttempts])
+
+    const triggerShake = () => {
+        shakeTranslateX.value = withTiming(40, {duration: 75}, () => {
+            shakeTranslateX.value = withTiming(0, {duration: 75}, () => {
+                shakeTranslateX.value = withTiming(-40, {duration: 75}, () => {
+                    shakeTranslateX.value = withTiming(0, {duration: 75}, () => {
+                        shakeTranslateX.value = withTiming(20, {duration: 50}, () => {
+                            shakeTranslateX.value = withTiming(0, {duration: 50})
+                        })
+                    })
+                })
+            })
+        })
+    }
+
+    const rStyleShake = useAnimatedStyle(() => {
+        return {
+            transform: [
+                {
+                    translateX: withSpring(shakeTranslateX.value)
+                }
+            ]
+        }
+    })
+
+    const renderInputs = React.useMemo(() => {
+
+        let textColor = props.blockedInput ? 'gray' : 'black'
+
+        return (
+            <Animated.View style={[rStyleShake, styles.inputsContainer]}>
+                {props.input.map((input, index) => {
+                    return (
+                        <Pressable
+                            key={index}
+                            style={[styles.input]}
+                            onPress={() => {
+                                if (props.blockedInput) {
+                                    return;
+                                }
+                                props.setCurrentInput((currentInput: string[]) => {
+                                    return [...currentInput, input];
+                                })
+                            }}
+                        >
+                            <Text style={{fontSize: INPUT_SIZE - 30, color: textColor}}>{input}</Text>
+                        </Pressable>
+                    )
+                })}
+            </Animated.View>
+        )
+    }, [props.blockedInput])
+
+    return (
+        <View style={[{height: '50%', alignItems: 'center'}]}>
+
+            {/* inputs */}
+            {renderInputs}
+
+            {/* bottom action */}
+            <Pressable
+                onPress={() => {
+                    props.bottomComponentOnPress()
+                }}
+            >
+                <Text style={{color: '#00A1FC'}}>{props.bottomComponentLabel}</Text>
+            </Pressable>
+
+        </View>
+    )
+}
+
+const styles = StyleSheet.create({
+    inputsContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        width: '85%',
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    input: {
+        width: INPUT_SIZE,
+        height: INPUT_SIZE,
+        marginHorizontal: 20,
+        marginVertical: 10,
+        borderRadius: 100,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
+})
+
+export default LockScreenBottom
+export {LockScreenBottomProps}
