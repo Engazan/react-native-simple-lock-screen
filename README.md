@@ -9,6 +9,23 @@ reanimated
 - expo 44.0.0 +
 - react-native-reanimated 2.3.0 +
 
+# Props
+
+| Name             | Type                            |Description    |
+| :--------------- | :------------------------------ | :------- |
+| `initBlockTime`   | `?number`          | init blocktime ( good when app reopen and u want to remember block time ) |
+| `initErrorMsg`   | `?string`          | init Error msg ( good when app reopen and u want to remember error msg ) |
+| `input`   | `string[]`               | User inputs |
+| `validInput`   | `string[]`          | User valid input, when passed by user **onValidInput** is triggered |
+| `onValidInput`   | `?() => void`          | triggered when user pass validInput |
+| `errors`   | `{[key: number]: {time: number, errorMessage: string}}`          | key - number of wrongattempts, time - block time in secounds, errorMessage - error when blocked |
+| `buildInTopComponentOptions`   | `?{label: string, filledColor?: string, unfilledColor?: string }`          | basic settings for buildin top component |
+| `buildInBottomComponentOptions`   | `?{bottomComponent: {label: string, onPress: () => void}}`          | basic settings for buildin bottom component |
+| `customTopComponent`   | `?React.FC<{currentInput: string[], wrongAttempts: number}>`          |  |
+| `customBottomComponent`   | `?React.FC<{currentInput: string[], setCurrentInput: Dispatch<string[]>, wrongAttempts: number, blockedInput: boolean}>`          |  |
+| `containerStyle`   | `ViewStyle`          | custom styles for main wrapper |
+
+
 # Example
 ```tsx
 <SafeAreaView style={{flex: 1}}>
