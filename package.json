@@ -1,6 +1,8 @@
 {
-  "name": "react-native-lock",
+  "name": "react-native-simple-lock-screen",
   "version": "1.0.0",
+  "description": "React native simple Lock screen with block timer",
+  "homepage": "https://github.com/Engazan/react-native-simple-lock-screen",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -9,12 +11,22 @@
     "web": "expo start --web",
     "eject": "expo eject"
   },
+  "keywords": [
+    "react-native"
+  ],
+  "author": "Patrik Horváth - Engazan",
+  "license": "Apache License",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Engazan/react-native-simple-lock-screen.git"
+  },
   "dependencies": {
     "expo": "~44.0.0",
     "expo-status-bar": "~1.2.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-native": "0.64.3",
+    "react-native-reanimated": "~2.3.1",
     "react-native-web": "0.17.1"
   },
   "devDependencies": {
@@ -23,5 +35,6 @@
     "@types/react-native": "~0.64.12",
     "typescript": "~4.3.5"
   },
-  "private": true
+  "peerDependencies": {},
+  "private": false
 }
