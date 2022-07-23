@@ -1,6 +1,6 @@
-import React, {Dispatch} from "react";
+import React from "react";
 import {Pressable, StyleSheet, Text, View} from "react-native";
-import Animated, {useAnimatedStyle, useSharedValue, withSpring, withTiming} from 'react-native-reanimated';
+import Animated, {Easing, interpolate, useAnimatedStyle, useSharedValue, withTiming} from 'react-native-reanimated';
 
 const INPUT_SIZE = 65;
 
@@ -17,6 +17,8 @@ interface LockScreenBottomProps {
 const LockScreenBottom: React.FC<LockScreenBottomProps> = (props) => {
 
     const shakeTranslateX = useSharedValue<number>(0)
+    const shakeInputRange = [0, .5, 1, 1.5, 2, 2.5, 3];
+    const shakeOutputRange = [0, -15, 0, -15, 0, 15, 0];
 
     React.useEffect(() => {
        if (props.wrongAttempts !== 0) {
@@ -25,24 +27,15 @@ const LockScreenBottom: React.FC<LockScreenBottomProps> = (props) => {
     }, [props.wrongAttempts])
 
     const triggerShake = () => {
-        shakeTranslateX.value = withTiming(40, {duration: 75}, () => {
-            shakeTranslateX.value = withTiming(0, {duration: 75}, () => {
-                shakeTranslateX.value = withTiming(-40, {duration: 75}, () => {
-                    shakeTranslateX.value = withTiming(0, {duration: 75}, () => {
-                        shakeTranslateX.value = withTiming(20, {duration: 50}, () => {
-                            shakeTranslateX.value = withTiming(0, {duration: 50})
-                        })
-                    })
-                })
-            })
-        })
+        shakeTranslateX.value = 0;
+        shakeTranslateX.value = withTiming(3, {duration: 600})
     }
 
     const rStyleShake = useAnimatedStyle(() => {
         return {
             transform: [
                 {
-                    translateX: withSpring(shakeTranslateX.value)
+                    translateX: interpolate(shakeTranslateX.value, shakeInputRange, shakeOutputRange)
                 }
             ]
         }
