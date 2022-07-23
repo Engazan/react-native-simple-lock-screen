@@ -5,9 +5,8 @@ reanimated
 
 <img src="react-native-simple-lock-screen.gif" width="400" height="800" >
 
-# Require
-- expo 44.0.0 +
-- react-native-reanimated 2.3.0 +
+# tested
+- expo 45.0.0 with react-native-reanimated 2.8.0
 
 # Props
 
